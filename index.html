@@ -9,18 +9,66 @@
 </head>
 
 <body>
-  <section class="chat__section">
+  <!-- <section class="chat__section">
     <div class="brand">
       <img height="40" src="/wassup.png" alt="">
-      <h1>Wassup</h1>
+      <h1>Whatsup</h1>
     </div>
     <div class="message__area"></div>
     <div>
       <textarea id="textarea" cols="30" rows="1" placeholder="Write a message..."></textarea>
+    </div> -->
+    <!-- Box with styles -->
+    <div class="box" id="draggableBox">
+    
     </div>
-  </section>
+  </section> 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/client.js"></script>
+  <script>
+    // Make the box draggable
+const draggableBox = document.getElementById('draggableBox');
+
+let offsetX, offsetY, isDragging = false;
+
+// Event listener for mouse down on the draggable box
+draggableBox.addEventListener('mousedown', (e) => {
+  // Set the dragging flag to true
+  isDragging = true;
+
+  // Calculate the offset of the mouse click relative to the top-left corner of the box
+  offsetX = e.clientX - draggableBox.getBoundingClientRect().left;
+  offsetY = e.clientY - draggableBox.getBoundingClientRect().top;
+
+  // Add the 'dragging' class to apply specific styling
+  draggableBox.classList.add('dragging');
+});
+
+// Event listener for mouse move
+document.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    // Calculate the new position of the box based on the mouse movement
+    const x = e.clientX - offsetX;
+    const y = e.clientY - offsetY;
+
+    // Set the new position using the 'left' and 'top' CSS properties
+    draggableBox.style.left = x + 'px';
+    draggableBox.style.top = y + 'px';
+  }
+});
+
+// Event listener for mouse up
+document.addEventListener('mouseup', () => {
+  if (isDragging) {
+    // Reset the dragging flag to false
+    isDragging = false;
+
+    // Remove the 'dragging' class to revert the styling
+    draggableBox.classList.remove('dragging');
+  }
+});
+
+  </script>
 </body>
 
 </html>

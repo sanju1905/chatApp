@@ -20,4 +20,11 @@ io.on('connection',(socket)=>{
     socket.on('message',(msg)=>{
       socket.broadcast.emit('message',msg)
     })
+
+      // Handle box position updates
+  socket.on('boxPosition', (position) => {
+    // Broadcast the new position to all connected clients
+    socket.broadcast.emit('boxPosition', position);
+  });
 })
+
