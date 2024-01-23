@@ -106,6 +106,18 @@ document.addEventListener('mousemove', (e) => {
   }
 });
 
+
+// Event listeners for touch events
+draggableBox.addEventListener('touchstart', (e) => {
+  startDragging(e.touches[0]);
+});
+document.addEventListener('touchmove', (e) => {
+  handleDragging(e.touches[0]);
+});
+document.addEventListener('touchend', endDragging);
+
+
+
 // Event listener for mouse up
 document.addEventListener('mouseup', () => {
   if (isDragging) {
