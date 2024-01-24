@@ -128,3 +128,24 @@ document.addEventListener('mouseup', () => {
     draggableBox.classList.remove('dragging');
   }
 });
+let hasControlAccess = false;
+
+socket.on('controlAccess', (hasAccess) => {
+  hasControlAccess = hasAccess;
+});
+
+// Modify the mousemove event listener to only emit 'boxPosition' if the client has control access
+document.addEventListener('mousemove', (e) => {
+  if (isDragging && hasControlAccess) {
+    // Calculate the new position of the box based on the mouse movement
+    const x = e.clientX - offsetX;
+    const y = e.clientY - offsetY;
+
+    // Set the new position using the 'left' and 'top' CSS properties
+    draggableBox.style.left = x + 'px';
+    draggableBox.style.top = y + 'px';
+
+    // Emit the new position to the server only if the client has control access
+    socket.emit('boxPosition', { x, y });
+  }
+});
