@@ -27,7 +27,6 @@
 //     socket.broadcast.emit('boxPosition', position);
 //   });
 // })
-
 const express = require("express");
 const app = express();
 
@@ -70,6 +69,18 @@ io.on('connection', (socket) => {
       socket.broadcast.emit('boxPosition', position);
     }
   });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    if (socket === controllingClientSocket) {
+      // If the controlling client disconnects, assign control access to another client
+      controllingClientSocket = null;
+      const allSockets = io.sockets.sockets;
+      const nextControllingClient = Array.from(allSockets).find(([id, client]) => client !== socket)?.[1];
+      if (nextControllingClient) {
+        controllingClientSocket = nextControllingClient;
+        nextControllingClient.emit('controlAccess', true);
+      }
+    }
+  });
 });
-
-
